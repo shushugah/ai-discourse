@@ -2,9 +2,17 @@
 # frozen_string_literal: true
 
 require 'colorize'
-require_relative 'deck'
+require './deck.rb'
+require "espeak"
+require 'marky_markov'
 
 class Game
+  attr_reader :markov
+
+  def initialize
+    @markov = MarkyMarkov::TemporaryDictionary.new
+  end
+
   def deck
     @deck ||= Deck.new
   end
@@ -17,33 +25,29 @@ class Game
     deck.answers
   end
 
-  def cards_in_round
-    first_answer = answers.sample
-    second_answer = (answers - [first_answer]).sample
-    [questions.sample, first_answer, second_answer]
+  def markov_answer
+    markov.generate_n_words(8)
   end
 
   def display
+    question = questions.sample.to_s
     puts "\e[H\e[2J"
     puts %(
-    Question is: #{cards_in_round.first.to_s.green}
-    1st Solution: #{cards_in_round[1].to_s.red}
-    2nd Solution: #{cards_in_round[2].to_s.blue}
+    Problem: #{question.green}
+    Solution #1: #{markov_answer.red}
+    Solution #2: #{markov_answer.blue}
 
 
 
     )
+    ESpeak::Speech.new(question, voice: "en", pitch: 80).speak
   end
 end
 
 game = Game.new
+game.markov.parse_file('answers.tsv')
 
-game.display
-while (user_input = gets.chomp)
-  case user_input
-  when 'end'
-    break
-  else
-    game.display
-  end
+while 2016 > 1984 do
+  game.display
+  sleep 2
 end
