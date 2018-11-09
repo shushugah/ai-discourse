@@ -22,10 +22,6 @@ class Game
     deck.questions
   end
 
-  def answers
-    deck.answers
-  end
-
   def markov_answer
     markov.generate_n_words(8)
   end
@@ -37,7 +33,7 @@ class Game
     Problem: #{question.green}
     Solution #1: #{markov_answer.red}
     Solution #2: #{markov_answer.blue}
-    #{DINOSAURS.sample}
+    #{DINOSAURS.sample.send %i(light_magenta magenta light_red yellow cyan light_blue).sample}
     )
     ESpeak::Speech.new(question, voice: 'en', pitch: 80).speak
   end
@@ -48,5 +44,5 @@ game.markov.parse_file('answers.tsv')
 
 while 2016 > 1984
   game.display
-  sleep 2
+  sleep 4
 end
