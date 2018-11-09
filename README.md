@@ -5,7 +5,7 @@ Ever wanted to solve the problems created by Artificial Intelligence...with Arti
 ## Installation
 Type the following below:
 ```ruby
-brew install espeak
+brew install espeak lame
 bundle install
 ./game.rb
 ````
