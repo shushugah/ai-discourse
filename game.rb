@@ -3,7 +3,8 @@
 
 require 'colorize'
 require './deck.rb'
-require "espeak"
+require './dinosaurs.rb'
+require 'espeak'
 require 'marky_markov'
 
 class Game
@@ -36,18 +37,16 @@ class Game
     Problem: #{question.green}
     Solution #1: #{markov_answer.red}
     Solution #2: #{markov_answer.blue}
-
-
-
+    #{DINOSAURS.sample}
     )
-    ESpeak::Speech.new(question, voice: "en", pitch: 80).speak
+    ESpeak::Speech.new(question, voice: 'en', pitch: 80).speak
   end
 end
 
 game = Game.new
 game.markov.parse_file('answers.tsv')
 
-while 2016 > 1984 do
+while 2016 > 1984
   game.display
   sleep 2
 end
